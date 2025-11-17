@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.active {
+  @apply bg-amber-900;
+}
+
+.prompt {
+  @apply text-right self-end rounded-full bg-amber-900 py-4 px-6;
+}
+
+.response {
+  @apply text-left self-start rounded-full bg-amber-700 py-4 px-6;
+}

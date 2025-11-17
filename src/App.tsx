@@ -1,12 +1,24 @@
-import type { JSX } from "react";
-// import ChatBotStart from "./components/ChatBotStart";
+import { useState, type JSX } from "react";
+import ChatBotStart from "./components/ChatBotStart";
 import ChatBotApp from "./components/ChatBotApp";
 
 function App(): JSX.Element {
+  const [isChatting, setIsChatting] = useState<boolean>(false);
+  const handleStartChat = (): void => {
+    setIsChatting(true);
+  };
+
+  const handleEndChat = (): void => {
+    setIsChatting(false);
+  };
+
   return (
     <div>
-      {/* <ChatBotStart /> */}
-      <ChatBotApp />
+      {isChatting ? (
+        <ChatBotApp onEndChat={handleEndChat} />
+      ) : (
+        <ChatBotStart onStartChat={handleStartChat} />
+      )}
     </div>
   );
 }
