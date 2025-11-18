@@ -95,11 +95,6 @@ function ChatBotApp({
               </div>
             );
           })}
-          {/* 
-          <div className="response text-lg font-serif">
-            Hello Trang, I am Okay at the moment, How can i assist you?
-            <span className="text-md block">12:29:55 PM</span>
-          </div> */}
 
           <div className="font-serif text-lg mt-auto">Typing...</div>
         </div>
@@ -116,7 +111,9 @@ function ChatBotApp({
             value={inputValue}
             placeholder="Type a message..."
           />
-          <Send className="cursor-pointer hover:scale-105 transition-all duration-150" />
+          <button type="submit">
+            <Send className="cursor-pointer hover:scale-105 transition-all duration-150" />
+          </button>
         </form>
       </div>
     </div>
