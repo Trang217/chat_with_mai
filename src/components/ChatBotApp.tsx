@@ -5,22 +5,53 @@ import type { Chat, Message } from "../types";
 interface ChatBotAppProps {
   chats: Chat[];
   onSetChats: React.Dispatch<React.SetStateAction<Chat[]>>;
+  onSetActiveChat: React.Dispatch<React.SetStateAction<string | null>>;
   onEndChat: () => void;
+  activeChat: string | null;
+  onNewChat: () => void;
 }
 
 function ChatBotApp({
   onEndChat,
   chats,
   onSetChats,
+  activeChat,
+  onNewChat,
+  onSetActiveChat,
 }: ChatBotAppProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>(chats[0].messages);
+
+  const activeChatObj =
+    chats.find((chat) => chat.id === activeChat) ?? chats[0];
+  const messages = activeChatObj.messages || chats[0].messages;
+
   const handleGoBackClick = (): void => {
     onEndChat();
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+  };
+
+  const handleDeleteChat = (
+    event: React.MouseEvent<SVGSVGElement> | undefined,
+    deletedChat_id: string
+  ): void => {
+    event?.stopPropagation();
+    const updatedChats: Chat[] = chats.filter(
+      (chat) => chat.id !== deletedChat_id
+    );
+    onSetChats(updatedChats);
+
+    if (deletedChat_id === activeChat) {
+      if (updatedChats.length > 0) {
+        const newActiveChat = updatedChats[0].id;
+        onSetActiveChat(newActiveChat);
+      } else {
+        onSetActiveChat(null);
+        onEndChat();
+      }
+    }
   };
 
   const sendMessages = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,19 +67,14 @@ function ChatBotApp({
       timestamp: new Date().toLocaleTimeString(),
     };
 
-    const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
     setInputValue("");
-
-    const updatedChats = chats.map((chat, index) => {
-      if (index === 0) {
-        return { ...chat, messages: updatedMessages };
-      }
-
-      return chat;
-    });
-
-    onSetChats(updatedChats);
+    onSetChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === activeChatObj?.id
+          ? { ...chat, messages: [...chat.messages, newMessage] }
+          : chat
+      )
+    );
   };
 
   return (
@@ -56,19 +82,26 @@ function ChatBotApp({
       <div className="flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
         <div className="flex items-center justify-between">
           <h2 className="font-serif text-xl uppercase">Chat List</h2>
-          <SquarePen className="cursor-pointer hover:scale-105 transition-all duration-150" />
+          <SquarePen
+            onClick={onNewChat}
+            className="cursor-pointer hover:scale-105 transition-all duration-150"
+          />
         </div>
 
-        {chats.map((chat, index) => {
+        {chats.map((chat) => {
           return (
             <div
-              key={index}
+              onClick={() => onSetActiveChat(chat.id)}
+              key={chat.id}
               className={`flex justify-between bg-[#DDA15E] h-16 pl-4 py-2 pr-1 rounded-md ${
-                index === 0 ? "active" : ""
+                chat.id === activeChat ? "active" : ""
               }`}
             >
-              <h4 className="text-lg tracking-wide">{chat.id}</h4>
-              <BadgeX className="cursor-pointer hover:scale-105 transition-all duration-150" />
+              <h4 className="text-lg tracking-wide">{chat.displayId}</h4>
+              <BadgeX
+                onClick={(e) => handleDeleteChat(e, chat.id)}
+                className="cursor-pointer hover:scale-105 transition-all duration-150"
+              />
             </div>
           );
         })}

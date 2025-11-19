@@ -2,27 +2,36 @@ import { useState, type JSX } from "react";
 import ChatBotStart from "./components/ChatBotStart";
 import ChatBotApp from "./components/ChatBotApp";
 import type { Chat } from "./types";
+import { v4 as uuidv4 } from "uuid";
 
 function App(): JSX.Element {
   const [isChatting, setIsChatting] = useState<boolean>(false);
   const [chats, setChats] = useState<Chat[]>([]);
+  const [activeChat, setActiveChat] = useState<string | null>(null);
   const handleStartChat = (): void => {
     setIsChatting(true);
 
     if (chats.length === 0) {
-      const newChat: Chat = {
-        id: `Chat ${new Date().toLocaleDateString(
-          "en-GB"
-        )} ${new Date().toLocaleTimeString()}`,
-        messages: [],
-      };
-
-      setChats([newChat]);
+      createNewChat();
     }
   };
 
   const handleEndChat = (): void => {
     setIsChatting(false);
+  };
+
+  const createNewChat = (): void => {
+    const newChat: Chat = {
+      id: uuidv4(),
+      displayId: `Chat ${new Date().toLocaleDateString(
+        "en-GB"
+      )} ${new Date().toLocaleTimeString()}`,
+      messages: [],
+    };
+
+    const updatedChats: Chat[] = [newChat, ...chats];
+    setChats(updatedChats);
+    setActiveChat(newChat.id);
   };
 
   return (
@@ -32,6 +41,9 @@ function App(): JSX.Element {
           onEndChat={handleEndChat}
           chats={chats}
           onSetChats={setChats}
+          activeChat={activeChat}
+          onNewChat={createNewChat}
+          onSetActiveChat={setActiveChat}
         />
       ) : (
         <ChatBotStart onStartChat={handleStartChat} />
