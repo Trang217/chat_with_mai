@@ -54,7 +54,7 @@ function ChatBotApp({
     }
   };
 
-  const sendMessages = (event: React.FormEvent<HTMLFormElement>) => {
+  const sendMessages = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (inputValue.trim() === "") {
@@ -75,6 +75,44 @@ function ChatBotApp({
           : chat
       )
     );
+
+    try {
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: inputValue }],
+            max_tokens: 500,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      const chatResponse = data.choices[0].message.content.trim();
+      console.log("chatResponse", chatResponse);
+
+      const newResponse: Message = {
+        type: "response",
+        text: chatResponse,
+        timestamp: new Date().toLocaleTimeString(),
+      };
+
+      onSetChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat.id === activeChat
+            ? { ...chat, messages: [...chat.messages, newResponse] }
+            : chat
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
