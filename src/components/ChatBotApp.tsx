@@ -20,6 +20,7 @@ function ChatBotApp({
   onSetActiveChat,
 }: ChatBotAppProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const activeChatObj =
     chats.find((chat) => chat.id === activeChat) ?? chats[0];
@@ -76,6 +77,8 @@ function ChatBotApp({
       )
     );
 
+    setIsTyping(true);
+
     try {
       const response = await fetch(
         "https://api.openai.com/v1/chat/completions",
@@ -110,6 +113,8 @@ function ChatBotApp({
             : chat
         )
       );
+
+      setIsTyping(false);
     } catch (error) {
       console.log(error);
     }
@@ -167,7 +172,7 @@ function ChatBotApp({
             return (
               <div
                 key={index}
-                className={`prompt text-lg font-serif ${message.type}`}
+                className={` text-lg font-serif ${message.type}`}
               >
                 {message.text}
                 <span className="text-md block">{message.timestamp}</span>
@@ -175,7 +180,9 @@ function ChatBotApp({
             );
           })}
 
-          <div className="font-serif text-lg mt-auto">Typing...</div>
+          {isTyping && (
+            <div className="font-serif text-lg mt-auto">Typing...</div>
+          )}
         </div>
 
         <form

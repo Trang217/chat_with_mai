@@ -5,9 +5,9 @@
 }
 
 .prompt {
-  @apply text-right self-end rounded-full bg-amber-900 py-4 px-6;
+  @apply text-right self-end rounded-4xl rounded-tr-none bg-amber-900 py-4 px-6;
 }
 
 .response {
-  @apply text-left self-start rounded-full bg-amber-700 py-4 px-6;
+  @apply text-left self-start rounded-4xl rounded-tl-none bg-amber-700 py-4 px-6;
 }
