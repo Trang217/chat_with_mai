@@ -1,4 +1,4 @@
-import { BadgeX, MoveRight, Send, Smile, SquarePen } from "lucide-react";
+import { BadgeX, FilePlusCorner, MoveRight, Send, Smile } from "lucide-react";
 import { useState, type JSX } from "react";
 import type { Chat, Message } from "../types";
 
@@ -82,10 +82,18 @@ function ChatBotApp({
       <div className="flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
         <div className="flex items-center justify-between">
           <h2 className="font-serif text-xl uppercase">Chat List</h2>
-          <SquarePen
-            onClick={onNewChat}
-            className="cursor-pointer hover:scale-105 transition-all duration-150"
-          />
+
+          <div className="relative group cursor-pointer inline-block">
+            <FilePlusCorner
+              onClick={onNewChat}
+              className="cursor-pointer hover:scale-105 transition-all duration-150"
+            />
+
+            {/* tooltip */}
+            <span className=" absolute left-1/2 -translate-x-1/2 top-[120%] opacity-0 group-hover:opacity-100 transition-all duration-200  text-white text-sm px-2 py-1 rounded whitespace-nowrap ">
+              Create Chat
+            </span>
+          </div>
         </div>
 
         {chats.map((chat) => {
@@ -108,7 +116,7 @@ function ChatBotApp({
       </div>
 
       <div className="flex flex-col w-2/3 bg-[#303e02]">
-        <div className="flex items-center justify-between py-10 px-4 bg-[#2e3428]">
+        <div className="flex items-center justify-between py-10 pr-4 pl-2 bg-[#2e3428]">
           <h3 className="text-xl">Chat with Mai</h3>
           <MoveRight
             onClick={handleGoBackClick}
