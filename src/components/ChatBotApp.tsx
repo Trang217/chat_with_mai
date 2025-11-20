@@ -112,7 +112,6 @@ function ChatBotApp({
 
       const data = await response.json();
       const chatResponse = data.choices[0].message.content.trim();
-      console.log("chatResponse", chatResponse);
 
       const newResponse: Message = {
         type: "response",
@@ -143,8 +142,8 @@ function ChatBotApp({
   return (
     <div className="flex min-h-screen text-[#FEFAE0]">
       <div className="hidden md:flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
-        <div className="flex items-center justify-between">
-          <h2 className="font-serif text-xl uppercase">Chat List</h2>
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="font-lato text-xl uppercase">Chat List</h2>
 
           <div className="relative group cursor-pointer inline-block">
             <FilePlusCorner
@@ -164,7 +163,7 @@ function ChatBotApp({
             <div
               onClick={() => onSetActiveChat(chat.id)}
               key={chat.id}
-              className={`flex justify-between bg-[#DDA15E] h-16 pl-4 py-2 pr-1 rounded-md ${
+              className={`flex items-center justify-around bg-[#DDA15E] h-12 pl-4 py-2 pr-1 cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-150 rounded-full ${
                 chat.id === activeChat ? "active" : ""
               }`}
             >
@@ -178,7 +177,7 @@ function ChatBotApp({
         })}
       </div>
 
-      <div className="flex flex-col w-full md:w-2/3 bg-[#303e02]">
+      <div className="flex flex-col w-full md:w-2/3 bg-[#606C38]">
         <div className="flex items-center justify-between py-10 pr-4 pl-2 bg-[#2e3428]">
           <h3 className="text-xl uppercase">Chat with Mai</h3>
           <MoveRight
@@ -190,10 +189,7 @@ function ChatBotApp({
         <div className="flex flex-col space-y-4 p-4 grow">
           {messages.map((message, index) => {
             return (
-              <div
-                key={index}
-                className={` text-lg font-serif ${message.type}`}
-              >
+              <div key={index} className={` text-lg font-lato ${message.type}`}>
                 {message.text}
                 <span className="text-md block">{message.timestamp}</span>
               </div>
@@ -201,7 +197,7 @@ function ChatBotApp({
           })}
 
           {isTyping && (
-            <div className="font-serif text-lg mt-auto">Typing...</div>
+            <div className="font-lato text-lg mt-auto">Typing...</div>
           )}
 
           <div ref={chatEndRef}></div>

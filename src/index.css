@@ -1,13 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --font-lato: "Lato", sans-serif;
+}
 .active {
   @apply bg-amber-900;
 }
 
 .prompt {
-  @apply text-right self-end rounded-4xl rounded-tr-none bg-amber-900 py-4 px-6;
+  @apply text-right self-end rounded-4xl rounded-tr-none border-2 border-amber-900 py-4 px-6 text-[#DDA15E];
 }
 
 .response {
-  @apply text-left self-start rounded-4xl rounded-tl-none bg-amber-700 py-4 px-6;
+  @apply text-left self-start rounded-4xl rounded-tl-none border-2 border-amber-700 py-4 px-6 text-[#DDA15E];
 }

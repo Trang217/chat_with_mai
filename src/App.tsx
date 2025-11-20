@@ -41,7 +41,7 @@ function App(): JSX.Element {
   };
 
   return (
-    <div>
+    <div className="font-lato">
       {isChatting ? (
         <ChatBotApp
           onEndChat={handleEndChat}
