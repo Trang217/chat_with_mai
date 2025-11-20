@@ -1,5 +1,5 @@
 import { BadgeX, FilePlusCorner, MoveRight, Send, Smile } from "lucide-react";
-import { useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 import type { Chat, Message } from "../types";
 
 interface ChatBotAppProps {
@@ -21,10 +21,11 @@ function ChatBotApp({
 }: ChatBotAppProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const activeChatObj =
-    chats.find((chat) => chat.id === activeChat) ?? chats[0];
-  const messages = activeChatObj.messages || chats[0].messages;
+    chats.find((chat) => chat.id === activeChat) ?? chats[0] ?? null;
+  const messages: Message[] = activeChatObj.messages ?? [];
 
   const handleGoBackClick = (): void => {
     onEndChat();
@@ -120,6 +121,10 @@ function ChatBotApp({
     }
   };
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, activeChat]);
+
   return (
     <div className="flex min-h-screen text-[#FEFAE0]">
       <div className="flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
@@ -183,6 +188,8 @@ function ChatBotApp({
           {isTyping && (
             <div className="font-serif text-lg mt-auto">Typing...</div>
           )}
+
+          <div ref={chatEndRef}></div>
         </div>
 
         <form
