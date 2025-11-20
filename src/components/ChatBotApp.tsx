@@ -142,7 +142,7 @@ function ChatBotApp({
 
   return (
     <div className="flex min-h-screen text-[#FEFAE0]">
-      <div className="flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
+      <div className="hidden md:flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
         <div className="flex items-center justify-between">
           <h2 className="font-serif text-xl uppercase">Chat List</h2>
 
@@ -178,9 +178,9 @@ function ChatBotApp({
         })}
       </div>
 
-      <div className="flex flex-col w-2/3 bg-[#303e02]">
+      <div className="flex flex-col w-full md:w-2/3 bg-[#303e02]">
         <div className="flex items-center justify-between py-10 pr-4 pl-2 bg-[#2e3428]">
-          <h3 className="text-xl">Chat with Mai</h3>
+          <h3 className="text-xl uppercase">Chat with Mai</h3>
           <MoveRight
             onClick={handleGoBackClick}
             className="cursor-pointer w-8 h-8 hover:scale-105 transition-all duration-150"
