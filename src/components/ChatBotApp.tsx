@@ -1,6 +1,8 @@
 import { BadgeX, FilePlusCorner, MoveRight, Send, Smile } from "lucide-react";
-import { useEffect, useRef, useState, type JSX } from "react";
+import { useEffect, useMemo, useRef, useState, type JSX } from "react";
 import type { Chat, Message } from "../types";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 interface ChatBotAppProps {
   chats: Chat[];
@@ -9,6 +11,16 @@ interface ChatBotAppProps {
   onEndChat: () => void;
   activeChat: string | null;
   onNewChat: () => void;
+}
+
+interface Emoji {
+  id: string;
+  keywords: string[];
+  name: string;
+  native: string;
+  unified: string;
+  emoticons: string[];
+  shortcodes: string;
 }
 
 function ChatBotApp({
@@ -21,11 +33,15 @@ function ChatBotApp({
 }: ChatBotAppProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const activeChatObj =
     chats.find((chat) => chat.id === activeChat) ?? chats[0] ?? null;
-  const messages: Message[] = activeChatObj.messages ?? [];
+  const messages: Message[] = useMemo(
+    () => activeChatObj.messages ?? [],
+    [activeChatObj]
+  );
 
   const handleGoBackClick = (): void => {
     onEndChat();
@@ -54,6 +70,10 @@ function ChatBotApp({
         onEndChat();
       }
     }
+  };
+
+  const handleEmojiSelect = (emoji: Emoji): void => {
+    setInputValue((prevInput) => prevInput + emoji.native);
   };
 
   const sendMessages = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -194,15 +214,24 @@ function ChatBotApp({
 
         <form
           onSubmit={sendMessages}
-          className="flex justify-between items-center space-x-3 px-4 w-full h-30 bg-green-950"
+          className="relative flex justify-between items-center space-x-3 px-4 w-full h-30 bg-green-950"
         >
-          <Smile />
+          <Smile
+            className="cursor-pointer"
+            onClick={() => setShowEmojiPicker((prev) => !prev)}
+          />
+          {showEmojiPicker && (
+            <div className="picker absolute bottom-[80%] left-8">
+              <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+            </div>
+          )}
           <input
             className="flex-1 outline-none text-xl placeholder:text-lg px-2"
             type="text"
             onChange={handleInputChange}
             value={inputValue}
             placeholder="Type a message..."
+            onFocus={() => setShowEmojiPicker(false)}
           />
           <button type="submit">
             <Send className="cursor-pointer hover:scale-105 transition-all duration-150" />
