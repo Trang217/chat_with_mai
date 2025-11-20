@@ -9,3 +9,13 @@ export interface Message {
   text: string;
   timestamp: string;
 }
+
+export interface Emoji {
+  id: string;
+  keywords: string[];
+  name: string;
+  native: string;
+  unified: string;
+  emoticons: string[];
+  shortcodes: string;
+}

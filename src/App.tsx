@@ -6,7 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 
 function App(): JSX.Element {
   const [isChatting, setIsChatting] = useState<boolean>(false);
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<Chat[]>(() => {
+    const storedData = localStorage.getItem("chats");
+    const storedChats: Chat[] = storedData ? JSON.parse(storedData) : [];
+    return storedChats;
+  });
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const handleStartChat = (): void => {
     setIsChatting(true);
@@ -31,6 +35,8 @@ function App(): JSX.Element {
 
     const updatedChats: Chat[] = [newChat, ...chats];
     setChats(updatedChats);
+    localStorage.setItem("chats", JSON.stringify(updatedChats));
+
     setActiveChat(newChat.id);
   };
 

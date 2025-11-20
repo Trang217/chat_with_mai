@@ -1,6 +1,6 @@
 import { BadgeX, FilePlusCorner, MoveRight, Send, Smile } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type JSX } from "react";
-import type { Chat, Message } from "../types";
+import type { Chat, Message, Emoji } from "../types";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 
@@ -11,16 +11,6 @@ interface ChatBotAppProps {
   onEndChat: () => void;
   activeChat: string | null;
   onNewChat: () => void;
-}
-
-interface Emoji {
-  id: string;
-  keywords: string[];
-  name: string;
-  native: string;
-  unified: string;
-  emoticons: string[];
-  shortcodes: string;
 }
 
 function ChatBotApp({
@@ -60,6 +50,7 @@ function ChatBotApp({
       (chat) => chat.id !== deletedChat_id
     );
     onSetChats(updatedChats);
+    localStorage.setItem("chats", JSON.stringify(updatedChats));
 
     if (deletedChat_id === activeChat) {
       if (updatedChats.length > 0) {
@@ -90,13 +81,15 @@ function ChatBotApp({
     };
 
     setInputValue("");
-    onSetChats((prevChats) =>
-      prevChats.map((chat) =>
+    onSetChats((prevChats) => {
+      const updatedChats: Chat[] = prevChats.map((chat) =>
         chat.id === activeChatObj?.id
           ? { ...chat, messages: [...chat.messages, newMessage] }
           : chat
-      )
-    );
+      );
+      localStorage.setItem("chats", JSON.stringify(updatedChats));
+      return updatedChats;
+    });
 
     setIsTyping(true);
 
@@ -127,13 +120,15 @@ function ChatBotApp({
         timestamp: new Date().toLocaleTimeString(),
       };
 
-      onSetChats((prevChats) =>
-        prevChats.map((chat) =>
+      onSetChats((prevChats) => {
+        const updatedChats: Chat[] = prevChats.map((chat) =>
           chat.id === activeChat
             ? { ...chat, messages: [...chat.messages, newResponse] }
             : chat
-        )
-      );
+        );
+        localStorage.setItem("chats", JSON.stringify(updatedChats));
+        return updatedChats;
+      });
 
       setIsTyping(false);
     } catch (error) {
