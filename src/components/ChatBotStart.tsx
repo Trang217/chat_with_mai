@@ -9,10 +9,10 @@ function ChatBotStart({ onStartChat }: ChatBotStartProps): JSX.Element {
     onStartChat();
   };
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#283618]">
+    <div className="flex items-center justify-center min-h-screen bg-amber-100">
       <button
         onClick={handleClick}
-        className=" font-lato font-bold bg-[#DDA15E] text-[#FEFAE0] text-5xl uppercase py-16 px-20 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition duration-200 hover:shadow-2xl"
+        className=" font-lato font-bold  bg-orange-200 text-violet-800 text-5xl uppercase py-16 px-20 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition duration-200 hover:shadow-2xl"
       >
         Chat with Mai
       </button>

@@ -140,19 +140,19 @@ function ChatBotApp({
   }, [messages, activeChat]);
 
   return (
-    <div className="flex min-h-screen text-[#FEFAE0]">
-      <div className="hidden md:flex flex-col space-y-4 w-1/3 p-10 bg-[#283618]">
+    <div className="flex min-h-screen text-amber-900 bg-amber-100">
+      <div className="hidden md:flex flex-col space-y-4 w-1/3 py-6 px-5 bg-amber-50 border-r-4 border-double border-r-amber-500">
         <div className="flex items-center justify-between mb-10">
-          <h2 className="font-lato text-xl uppercase">Chat List</h2>
+          <h2 className="font-lato font-bold text-xl uppercase">Chat List</h2>
 
           <div className="relative group cursor-pointer inline-block">
             <FilePlusCorner
               onClick={onNewChat}
-              className="cursor-pointer hover:scale-105 transition-all duration-150"
+              className="cursor-pointer hover:scale-105 transition-all duration-150 text-purple-800"
             />
 
             {/* tooltip */}
-            <span className=" absolute left-1/2 -translate-x-1/2 top-[120%] opacity-0 group-hover:opacity-100 transition-all duration-200  text-white text-sm px-2 py-1 rounded whitespace-nowrap ">
+            <span className=" absolute left-1/2 -translate-x-1/2 top-[120%] opacity-0 group-hover:opacity-100 transition-all duration-200 text-sm px-2 py-1 rounded whitespace-nowrap ">
               Create Chat
             </span>
           </div>
@@ -163,11 +163,13 @@ function ChatBotApp({
             <div
               onClick={() => onSetActiveChat(chat.id)}
               key={chat.id}
-              className={`flex items-center justify-around bg-[#DDA15E] h-12 pl-4 py-2 pr-1 cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-150 rounded-full ${
+              className={`flex items-center justify-around bg-amber-400 h-12 pl-4 py-2 pr-1 cursor-pointer hover:scale-105 hover:shadow-2xl transition-all duration-150 rounded-full ${
                 chat.id === activeChat ? "active" : ""
               }`}
             >
-              <h4 className="text-lg tracking-wide">{chat.displayId}</h4>
+              <h4 className="text-sm lg:text-lg tracking-wide">
+                {chat.displayId}
+              </h4>
               <BadgeX
                 onClick={(e) => handleDeleteChat(e, chat.id)}
                 className="cursor-pointer hover:scale-105 transition-all duration-150"
@@ -177,12 +179,12 @@ function ChatBotApp({
         })}
       </div>
 
-      <div className="flex flex-col w-full md:w-2/3 bg-[#606C38]">
-        <div className="flex items-center justify-between py-10 pr-4 pl-2 bg-[#2e3428]">
-          <h3 className="text-xl uppercase">Chat with Mai</h3>
+      <div className="flex flex-col w-full md:w-2/3 bg-amber-100">
+        <div className="flex items-center justify-between py-6 pr-4 pl-2">
+          <h3 className="text-xl font-bold uppercase">Chat with Mai</h3>
           <MoveRight
             onClick={handleGoBackClick}
-            className="cursor-pointer w-8 h-8 hover:scale-105 transition-all duration-150"
+            className="cursor-pointer w-8 h-8 hover:scale-105 transition-all duration-150 text-purple-800"
           />
         </div>
 
@@ -205,10 +207,10 @@ function ChatBotApp({
 
         <form
           onSubmit={sendMessages}
-          className="relative flex justify-between items-center space-x-3 px-4 w-full h-30 bg-green-950"
+          className="relative flex justify-between items-center space-x-3 px-4 w-full h-30 bg-yellow-50 "
         >
           <Smile
-            className="cursor-pointer"
+            className="cursor-pointer text-purple-800"
             onClick={() => setShowEmojiPicker((prev) => !prev)}
           />
           {showEmojiPicker && (
@@ -217,7 +219,7 @@ function ChatBotApp({
             </div>
           )}
           <input
-            className="flex-1 outline-none text-xl placeholder:text-lg px-2"
+            className="flex-1 outline-none text-xl placeholder:text-lg placeholder:text-amber-800 px-2"
             type="text"
             onChange={handleInputChange}
             value={inputValue}
@@ -225,7 +227,7 @@ function ChatBotApp({
             onFocus={() => setShowEmojiPicker(false)}
           />
           <button type="submit">
-            <Send className="cursor-pointer hover:scale-105 transition-all duration-150" />
+            <Send className="cursor-pointer text-purple-800 hover:scale-105 transition-all duration-150" />
           </button>
         </form>
       </div>
