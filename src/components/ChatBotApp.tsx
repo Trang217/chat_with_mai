@@ -1,4 +1,10 @@
-import { BadgeX, FilePlusCorner, MoveRight, Send, Smile } from "lucide-react";
+import {
+  ArrowBigRight,
+  BadgeX,
+  FilePlusCorner,
+  Send,
+  Smile,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type JSX } from "react";
 import type { Chat, Message, Emoji } from "../types";
 import Picker from "@emoji-mart/react";
@@ -140,7 +146,7 @@ function ChatBotApp({
   }, [messages, activeChat]);
 
   return (
-    <div className="flex min-h-screen text-amber-900 bg-amber-100">
+    <div className="flex min-h-screen text-amber-900 bg-amber-100 ">
       <div className="hidden md:flex flex-col space-y-4 w-1/3 py-6 px-5 bg-amber-50 border-r-4 border-double border-r-amber-500">
         <div className="flex items-center justify-between mb-10">
           <h2 className="font-lato font-bold text-xl uppercase">Chat List</h2>
@@ -182,7 +188,7 @@ function ChatBotApp({
       <div className="flex flex-col w-full md:w-2/3 bg-amber-100">
         <div className="flex items-center justify-between py-6 pr-4 pl-2">
           <h3 className="text-xl font-bold uppercase">Chat with Mai</h3>
-          <MoveRight
+          <ArrowBigRight
             onClick={handleGoBackClick}
             className="cursor-pointer w-8 h-8 hover:scale-105 transition-all duration-150 text-purple-800"
           />
